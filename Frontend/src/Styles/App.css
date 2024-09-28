@@ -13,7 +13,8 @@
 .left-container {
   display: flex;
   flex-direction: column; /* Stack MainComponent and Footer vertically */
-  flex: 4; /* Give more space to the left side */
+  flex: 4;
+  padding:10px /* Give more space to the left side */
 }
 
 /* Style for the MainComponent and SideComponent */

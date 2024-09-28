@@ -1,8 +1,10 @@
 .stock-item {
-    display: flex;
-    justify-content: space-between; /* Puts the stock name on the left and switch on the right */
-    align-items: center; /* Vertically aligns the items */
-  }
+    border: 2px solid #ccc;   /* Gray border */
+    border-radius: 5px;       /* Optional: rounded corners */
+    display: flex;            /* For aligning content, especially the switch */
+    justify-content: space-between; /* Space between stock name and switch */
+    align-items: center;
+}
 
 .stock-name {
     font-size: 16px;
@@ -13,4 +15,8 @@
     flex: 1; /* Side component will take 1 part of the width */
     padding: 10px;
     background-color: #e0e0e0; /* Light background for distinction */
+}
+
+.custom-switch {
+
 }
