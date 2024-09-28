@@ -1,0 +1,31 @@
+/* App.css */
+
+/* Style for the content container */
+.content-container {
+  display: flex;
+  justify-content: space-between; /* This ensures space between the components */
+  padding: 20px; /* Optional padding */
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Left container with MainComponent and Footer stacked vertically */
+.left-container {
+  display: flex;
+  flex-direction: column; /* Stack MainComponent and Footer vertically */
+  flex: 4; /* Give more space to the left side */
+}
+
+/* Style for the MainComponent and SideComponent */
+.graph {
+  padding: 10px;
+  background-color: #f0f0f0;
+  margin-bottom: 2rem;
+}
+
+/* Footer styling */
+.controls {
+  padding: 10px;
+  background-color: #333;
+  color: white;
+}
