@@ -15,10 +15,12 @@ function Stock({ stockName, onToggle }) {
 	return (
 		<div className="stock-item">
 			<span>{stockName}</span>
+
 			<Switch 
 			checked={isSelected} 
 			onChange={handleToggle} 
 			color="primary"
+			size="small" 
 			/>
 		</div>
 	);

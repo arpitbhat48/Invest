@@ -8,21 +8,21 @@ import Controls from './Controls';
 import './Styles/App.css';
 
 function App() {
-  const [stocks, setStocks] = useState([]);
-  const [selectedStocks, setSelectedStocks] = useState([]);
+	const [stocks, setStocks] = useState([]);
+	const [selectedStocks, setSelectedStocks] = useState([]);
 
-  // Fetch data from backend when the component mounts
-  useEffect(() => {
-    axios.get('http://localhost:5000/api/stocks')
+	// Fetch data from backend when the component mounts
+	useEffect(() => {
+	axios.get('http://localhost:5000/api/stocks')
 	.then(response => {
-        setStocks(response.data);  // Set the stock data from PostgreSQL
-	})
-	.catch(error => {
-        console.error('Error fetching stocks:', error);
-	});
-  }, []);
+			setStocks(response.data);  // Set the stock data from PostgreSQL
+		})
+		.catch(error => {
+			console.error('Error fetching stocks:', error);
+		});
+	}, []);
 
-  // Handle stock selection/deselection for graph
+	// Handle stock selection/deselection for graph
 	const handleStockToggle = (stockName, isSelected) => {
 		const selectedStock = stocks.find(s => s.stock_name === stockName);  // Find the selected stock from the stocks list
 		if (isSelected) {
@@ -47,7 +47,7 @@ function App() {
 				<Stocks stocks={stocks} onStockToggle={handleStockToggle} />
 			</div>
 		</div>
-  	);
+	);
 }
 
 export default App;
