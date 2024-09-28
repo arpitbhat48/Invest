@@ -4,6 +4,7 @@
     display: flex;            /* For aligning content, especially the switch */
     justify-content: space-between; /* Space between stock name and switch */
     align-items: center;
+    margin: 1px;
 }
 
 .stock-name {
@@ -15,8 +16,4 @@
     flex: 1; /* Side component will take 1 part of the width */
     padding: 10px;
     background-color: #e0e0e0; /* Light background for distinction */
-}
-
-.custom-switch {
-
 }

@@ -4,9 +4,9 @@
 .content-container {
   display: flex;
   justify-content: space-between; /* This ensures space between the components */
-  padding: 20px; /* Optional padding */
+  padding: 10px; /* Optional padding */
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 /* Left container with MainComponent and Footer stacked vertically */
@@ -14,12 +14,12 @@
   display: flex;
   flex-direction: column; /* Stack MainComponent and Footer vertically */
   flex: 4;
-  padding:10px /* Give more space to the left side */
+  padding: 10px /* Give more space to the left side */
 }
 
 /* Style for the MainComponent and SideComponent */
 .graph {
-  padding: 10px;
+  padding: 1px;
   background-color: #f0f0f0;
   margin-bottom: 2rem;
 }
