@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-between; /* Puts the stock name on the left and switch on the right */
     align-items: center; /* Vertically aligns the items */
-    padding: 10px;  border-bottom: 1px solid #ccc;
   }
 
 .stock-name {
