@@ -2,9 +2,9 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 function LineGraph({ selectedStocks }) {
-    // Prepare data in the format required by Recharts
     const chartData = [];
-	console.log("LineGraph selectedStocks: ", selectedStocks);
+	// console.log("LineGraph selectedStocks: ", selectedStocks);
+
 	const CustomTooltip = ({ active, payload, label }) => {
 		if (active && payload && payload.length) {
 			return (

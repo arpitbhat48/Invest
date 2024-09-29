@@ -22,7 +22,7 @@ function App() {
 				})
 				.then(data => {
 					// console.log("data", data)
-					setStocks(data);  // Set stocks state
+					setStocks(data);  
 				})
 				.catch(error => {
 					console.error('Error fetching stocks:', error);
@@ -46,7 +46,7 @@ function App() {
 						week: item.week
 					}));
 
-					console.log("stockData",stockData);
+					// console.log("stockData",stockData);
 					setSelectedStocks(prevStocks => [
 						...prevStocks,
 						{ id: stockId, stockName:stockData[0].stock_name, data: priceData }  // Include stock name
