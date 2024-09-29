@@ -12,7 +12,7 @@ function LineGraph({ selectedStocks }) {
 				<p>{`Week: ${label}`}</p>
 				{payload.map((entry) => (
 					<p key={entry.name} style={{ color: entry.stroke }}>
-					{`${entry.name}: ${parseInt(entry.value)}`}
+					{`${entry.name}: ${entry.value}`}
 					</p>
 				))}
 				</div>
@@ -30,7 +30,7 @@ function LineGraph({ selectedStocks }) {
 			}
 
 			// Add the price for this stock to the data entry for this week
-			chartData[weekIndex][`stock${index + 1}`] = point.price;
+			chartData[weekIndex][stock.stockName] = point.price;
 		});
 	});
 
@@ -47,12 +47,11 @@ function LineGraph({ selectedStocks }) {
 			<Tooltip content={<CustomTooltip />} />
 			<Legend />
 
-			{/* Plot a line for each stock */}
-			{selectedStocks.map((stock, index) => (
+			{selectedStocks.map((stock) => (
 				<Line
 					key={stock.id}
 					type="linear"
-					dataKey={`stock${index + 1}`}
+					dataKey={stock.stockName}
 					stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`}  // Random color for each line
 					activeDot={{ r: 10 }}
 					strokeWidth={3}

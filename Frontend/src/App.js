@@ -31,6 +31,7 @@ function App() {
 
 		const handleStockToggle = async (stockId, stockName) => {
 			const alreadySelected = selectedStocks.find(stock => stock.id === stockId);
+			
 		
 			if (alreadySelected) {
 				setSelectedStocks(prevStocks => prevStocks.filter(stock => stock.id !== stockId));
@@ -38,10 +39,17 @@ function App() {
 				try {
 					const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
 					const stockData = await response.json();
-					// console.log("stockData",stockData);
+
+					// Map stockData to only include price and week fields
+					const priceData = stockData.map(item => ({
+						price: item.price,
+						week: item.week
+					}));
+
+					console.log("stockData",stockData);
 					setSelectedStocks(prevStocks => [
 						...prevStocks,
-						{ id: stockId, data: stockData }  // Include stock name
+						{ id: stockId, stockName:stockData[0].stock_name, data: priceData }  // Include stock name
 					]);
 				} catch (error) {
 					console.error('Error fetching stock prices:', error);
