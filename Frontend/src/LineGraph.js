@@ -1,48 +1,49 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 function LineGraph({ selectedStocks }) {
-	// Combine all selected stocks' data by week and ensure week and price are numbers
-	const data = [];
-	selectedStocks.forEach(stock => {
-	stock.prices.forEach((priceData, index) => {
-		// Parse the week and price as numbers
-		const week = parseFloat(priceData.week);
-		const price = parseFloat(priceData.price);
+    // Prepare data in the format required by Recharts
+    const chartData = [];
 
-		// Check if this week already exists in the data array
-		if (!data[index]) {
-		data[index] = { week };
-		}
+    // Collect the last 10 weeks from all selected stocks into a unified array
+    selectedStocks.forEach((stock, index) => {
+        stock.data.forEach((point, weekIndex) => {
+            // Ensure a data entry exists for each week
+            if (!chartData[weekIndex]) {
+                chartData[weekIndex] = { week: point.week };
+            }
 
-		// Add the stock's price data under its name
-		data[index][stock.stock_name] = price;
-	});
-	});
+            // Add the price for this stock to the data entry for this week
+            chartData[weekIndex][`stock${index + 1}`] = point.price;
+        });
+    });
 
-	return (
-	<LineChart
-		width={1200}
-		height={600}
-		data={data}
-		margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-	>
-		<XAxis dataKey="week" />
-		<YAxis />
-		<CartesianGrid strokeDasharray="3 3" />
-		<Tooltip />
-		<Legend />
-		{selectedStocks.map(stock => (
-		<Line 
-			key={stock.stock_name} 
-			type="monotone" 
-			dataKey={stock.stock_name} 
-			stroke="#8884d8" 
-			activeDot={{ r: 8 }} 
-		/>
-		))}
-	</LineChart>
-	);
+    return (
+        <LineChart
+            width={1800}
+            height={1000}
+            data={chartData}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+             <CartesianGrid stroke="#ccc" strokeWidth="2"/>
+            <XAxis dataKey="week" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+
+            {/* Plot a line for each stock */}
+            {selectedStocks.map((stock, index) => (
+                <Line
+                    key={stock.id}
+                    type="linear"
+                    dataKey={`stock${index + 1}`}
+                    stroke={`#${Math.floor(Math.random()*16777215).toString(16)}`}  // Random color for each line
+                    activeDot={{ r: 10 }}
+					strokeWidth={3}
+                />
+            ))}
+        </LineChart>
+    );
 }
 
 export default LineGraph;

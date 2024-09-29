@@ -1,40 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Stocks from './Stocks';
-import LineGraph from './LineGraph';
 import Controls from './Controls';
+import LineGraph from './LineGraph';
 
 import './Styles/App.css';
 
 function App() {
+	// State to store all stocks and selected stock data
 	const [stocks, setStocks] = useState([]);
 	const [selectedStocks, setSelectedStocks] = useState([]);
+	
+	    // Fetch all stocks on component mount
+		useEffect(() => {
+			fetch('http://localhost:5000/stocks')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
+				.then(data => {
+					setStocks(data);  // Set stocks state
+				})
+				.catch(error => {
+					console.error('Error fetching stocks:', error);
+				});
+		}, []);
 
-	// Fetch data from backend when the component mounts
-	useEffect(() => {
-	axios.get('http://localhost:5000/api/stocks')
-	.then(response => {
-			setStocks(response.data);  // Set the stock data from PostgreSQL
-		})
-		.catch(error => {
-			console.error('Error fetching stocks:', error);
-		});
-	}, []);
-
-	// Handle stock selection/deselection for graph
-	const handleStockToggle = (stockName, isSelected) => {
-		const selectedStock = stocks.find(s => s.stock_name === stockName);  // Find the selected stock from the stocks list
-		if (isSelected) {
-			// If stock is selected, add it to selectedStocks
-			setSelectedStocks(prev => [...prev, selectedStock]);
-		} else {
-			// If stock is deselected, remove it from selectedStocks
-			setSelectedStocks(prev => prev.filter(stock => stock.stock_name !== stockName));
-		}
-	};
-	console.log(stocks);
-	console.log('Selected Stocks:', selectedStocks);
+		const handleStockToggle = async (stockId) => {
+			const alreadySelected = selectedStocks.find(stock => stock.id === stockId);
+	
+			if (alreadySelected) {
+				setSelectedStocks(prevStocks => prevStocks.filter(stock => stock.id !== stockId));
+			} else {
+				try {
+					const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
+					const stockData = await response.json();
+					console.log('Fetched stock data:', stockData); 
+					setSelectedStocks(prevStocks => [
+						...prevStocks,
+						{ id: stockId, data: stockData }
+					]);
+				} catch (error) {
+					console.error('Error fetching stock prices:', error);
+				}
+			}
+		};
 
 	return (
 		<div className="App">
@@ -44,7 +56,11 @@ function App() {
 					<LineGraph selectedStocks={selectedStocks} />
 					<Controls />
 				</div>
-				<Stocks stocks={stocks} onStockToggle={handleStockToggle} />
+				<Stocks 
+					stocks={stocks}
+					selectedStocks={selectedStocks}
+					onToggle={handleStockToggle}
+				/>
 			</div>
 		</div>
 	);
