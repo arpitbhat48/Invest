@@ -1,54 +1,46 @@
 const express = require('express');
-const { Pool } = require('pg');
 const cors = require('cors');
-
-// Create an Express app
 const app = express();
-app.use(cors()); // Enable CORS to allow requests from React app
+const pool = require('./db');  // Assuming you have your PostgreSQL pool setup here
 
-// PostgreSQL connection pool
-const pool = new Pool({
-  user: 'postgres',       // Your PostgreSQL username
-  host: 'localhost',       // Where PostgreSQL is running (localhost in most cases)
-  database: 'stocks', // Your PostgreSQL database name
-  password: 'mysql', // Your PostgreSQL password
-  port: 5432,              // Default PostgreSQL port
+// Middleware
+app.use(cors());
+app.use(express.json());  // For parsing JSON request bodies
+
+// Route to get all stocks
+app.get('/stocks', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, stock_name FROM stocks');
+    res.json(result.rows);  // Send back the stock data
+  } catch (error) {
+    console.error('Error fetching stocks:', error);
+    res.status(500).send('Server error');
+  }
 });
 
-// Endpoint to get stocks and their prices
-app.get('/api/stocks', async (req, res) => {
+// Route to get the last 10 weeks of stock prices for a specific stock
+app.get('/stocks/:id/prices', async (req, res) => {
+  const stockId = req.params.id;
+  
   try {
-    // Get all stocks
-    const stocksQuery = 'SELECT * FROM stocks';
-    const stocksResult = await pool.query(stocksQuery);
-    const stocks = stocksResult.rows;
-
-    // Fetch stock prices for each stock
-    const stockPricesQuery = `
-      SELECT stock_prices.stock_id, stock_prices.price, stock_prices.week
+    const result = await pool.query(`
+      SELECT price, week
       FROM stock_prices
-      JOIN stocks ON stocks.id = stock_prices.stock_id
-    `;
-    const stockPricesResult = await pool.query(stockPricesQuery);
-    const stockPrices = stockPricesResult.rows;
+      WHERE stock_id = $1
+      ORDER BY week DESC
+      LIMIT 10
+    `, [stockId]);
 
-    // Combine stocks with their prices
-    const stocksWithPrices = stocks.map(stock => {
-      return {
-        ...stock,
-        prices: stockPrices.filter(price => price.stock_id === stock.id),
-      };
-    });
-
-    res.json(stocksWithPrices); // Send combined data as JSON response
+    // Return the sorted data for the last 10 weeks
+    res.json(result.rows.reverse());  // Reverse to make it ascending from oldest to newest
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Failed to fetch data from database' });
+    console.error('Error fetching stock prices:', error);
+    res.status(500).send('Server error');
   }
 });
 
 // Start the server
-const port = 5000; // This will be the backend port (React frontend can be on 3000)
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
