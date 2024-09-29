@@ -24,11 +24,12 @@ app.get('/stocks/:id/prices', async (req, res) => {
   
   try {
     const result = await pool.query(`
-      SELECT price, week
-      FROM stock_prices
-      WHERE stock_id = $1
-      ORDER BY week DESC
-      LIMIT 10
+		SELECT stocks.stock_name, stock_prices.price, stock_prices.week 
+			FROM stock_prices 
+			JOIN stocks ON stock_prices.stock_id = stocks.id 
+			WHERE stocks.id = $1
+			ORDER BY stock_prices.week DESC
+			LIMIT 10;
     `, [stockId]);
 
     // Return the sorted data for the last 10 weeks

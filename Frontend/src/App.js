@@ -21,6 +21,7 @@ function App() {
 					return response.json();
 				})
 				.then(data => {
+					// console.log("data", data)
 					setStocks(data);  // Set stocks state
 				})
 				.catch(error => {
@@ -28,18 +29,19 @@ function App() {
 				});
 		}, []);
 
-		const handleStockToggle = async (stockId) => {
+		const handleStockToggle = async (stockId, stockName) => {
 			const alreadySelected = selectedStocks.find(stock => stock.id === stockId);
-	
+		
 			if (alreadySelected) {
 				setSelectedStocks(prevStocks => prevStocks.filter(stock => stock.id !== stockId));
 			} else {
 				try {
 					const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
 					const stockData = await response.json();
+					// console.log("stockData",stockData);
 					setSelectedStocks(prevStocks => [
 						...prevStocks,
-						{ id: stockId, data: stockData }
+						{ id: stockId, data: stockData }  // Include stock name
 					]);
 				} catch (error) {
 					console.error('Error fetching stock prices:', error);
@@ -58,7 +60,7 @@ function App() {
 				<Stocks 
 					stocks={stocks}
 					selectedStocks={selectedStocks}
-					onToggle={handleStockToggle}
+					onToggle={(stockId, stockName) => handleStockToggle(stockId, stockName)}  // Pass stock name
 				/>
 			</div>
 		</div>
