@@ -37,7 +37,6 @@ function App() {
 				try {
 					const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
 					const stockData = await response.json();
-					console.log('Fetched stock data:', stockData); 
 					setSelectedStocks(prevStocks => [
 						...prevStocks,
 						{ id: stockId, data: stockData }

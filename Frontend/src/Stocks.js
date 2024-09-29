@@ -5,7 +5,6 @@ import './Styles/Stock.css';
 
 
 function Stocks({ stocks, selectedStocks, onToggle }) {
-    console.log('Stocks component received stocks:', stocks);  // Debugging log
 
     return (
         <div className="stocks-container">
