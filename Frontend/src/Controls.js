@@ -3,7 +3,8 @@ import React from 'react';
 function Controls({ clearAllToggles }) {
     return (
         <div className="controls">
-            <button onClick={clearAllToggles}>Turn Off All Toggles</button>
+            <button onClick={clearAllToggles}>Close All Stocks</button>
+            <button>Turn on Owned Stocks</button>
         </div>
     );
 }

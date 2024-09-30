@@ -11,6 +11,7 @@ function Stock({ stock, isSelected, onToggle }) {
                 checked={isSelected}  // Set the checked state based on whether the stock is selected
                 onChange={() => onToggle(stock.id)}  // Call the onToggle function with stock id
                 color="primary"
+				size="small"
             />
         </div>
     );

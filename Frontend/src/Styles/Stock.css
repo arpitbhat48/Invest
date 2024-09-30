@@ -4,7 +4,9 @@
     display: flex;            /* For aligning content, especially the switch */
     justify-content: space-between; /* Space between stock name and switch */
     align-items: center;
-    margin: 1px;
+    padding: 0px 2px;
+    padding-bottom: 2em;
+    margin: 3px;
 }
 
 .stock-name {
@@ -15,13 +17,16 @@
 .stocks-container {
     flex: 1; /* Side component will take 1 part of the width */
     padding: 10px;
-    background-color: #e0e0e0; /* Light background for distinction */
+    border: solid 1px #ccff99;
+    border-radius: 10px;
+    padding: 1em 1em;
+    background-color: #daffb3;
 }
 
 .stock-item:nth-child(odd) {
-    background-color: #ccc; /* light gray */
-  }
+    background-color: #9cff33; /* light gray */
+}
   
-  .stock-item:nth-child(even) {
-    background-color: #fff; /* white */
-  }
+.stock-item:nth-child(even) {
+    background-color: #69cc00; /* white */
+}
