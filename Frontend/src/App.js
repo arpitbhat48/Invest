@@ -11,51 +11,56 @@ function App() {
 	const [stocks, setStocks] = useState([]);
 	const [selectedStocks, setSelectedStocks] = useState([]);
 	
-	    // Fetch all stocks on component mount
-		useEffect(() => {
-			fetch('http://localhost:5000/stocks')
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					return response.json();
-				})
-				.then(data => {
-					// console.log("data", data)
-					setStocks(data);  
-				})
-				.catch(error => {
-					console.error('Error fetching stocks:', error);
-				});
-		}, []);
-
-		const handleStockToggle = async (stockId, stockName) => {
-			const alreadySelected = selectedStocks.find(stock => stock.id === stockId);
-			
-		
-			if (alreadySelected) {
-				setSelectedStocks(prevStocks => prevStocks.filter(stock => stock.id !== stockId));
-			} else {
-				try {
-					const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
-					const stockData = await response.json();
-
-					// Map stockData to only include price and week fields
-					const priceData = stockData.map(item => ({
-						price: item.price,
-						week: item.week
-					}));
-
-					// console.log("stockData",stockData);
-					setSelectedStocks(prevStocks => [
-						...prevStocks,
-						{ id: stockId, stockName:stockData[0].stock_name, data: priceData }  // Include stock name
-					]);
-				} catch (error) {
-					console.error('Error fetching stock prices:', error);
+	// Fetch all stocks on component mount
+	useEffect(() => {
+		fetch('http://localhost:5000/stocks')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
 				}
+				return response.json();
+			})
+			.then(data => {
+				// console.log("data", data)
+				setStocks(data);  
+			})
+			.catch(error => {
+				console.error('Error fetching stocks:', error);
+			});
+	}, []);
+
+	const handleStockToggle = async (stockId, stockName) => {
+		const alreadySelected = selectedStocks.find(stock => stock.id === stockId);
+		
+	
+		if (alreadySelected) {
+			setSelectedStocks(prevStocks => prevStocks.filter(stock => stock.id !== stockId));
+		} else {
+			try {
+				const response = await fetch(`http://localhost:5000/stocks/${stockId}/prices`);
+				const stockData = await response.json();
+
+				// Map stockData to only include price and week fields
+				const priceData = stockData.map(item => ({
+					price: item.price,
+					week: item.week
+				}));
+
+				// console.log("stockData",stockData);
+				setSelectedStocks(prevStocks => [
+					...prevStocks,
+					{ id: stockId, stockName:stockData[0].stock_name, data: priceData }  // Include stock name
+				]);
+			} catch (error) {
+				console.error('Error fetching stock prices:', error);
 			}
-		};
+		}
+	};
+
+	// Function to clear all toggled stocks
+    const clearAllToggles = () => {
+        setSelectedStocks([]);  // This will "untoggle" all stocks
+    };
 
 	return (
 		<div className="App">
@@ -63,7 +68,7 @@ function App() {
 			<div className="content-container">
 				<div className="left-container">
 					<LineGraph selectedStocks={selectedStocks} />
-					<Controls />
+					<Controls clearAllToggles={clearAllToggles} />
 				</div>
 				<Stocks 
 					stocks={stocks}
