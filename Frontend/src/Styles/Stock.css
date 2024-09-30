@@ -30,3 +30,15 @@
 .stock-item:nth-child(even) {
     background-color: #69cc00; /* white */
 }
+
+.stock-buttons {
+    gap: 5px;                 /* Space between buttons */
+    right: 60px;              /* Set distance from the right edge */
+}
+
+.stock-btn {
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: white;
+}
