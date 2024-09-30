@@ -17,3 +17,11 @@
     padding: 10px;
     background-color: #e0e0e0; /* Light background for distinction */
 }
+
+.stock-item:nth-child(odd) {
+    background-color: #ccc; /* light gray */
+  }
+  
+  .stock-item:nth-child(even) {
+    background-color: #fff; /* white */
+  }
