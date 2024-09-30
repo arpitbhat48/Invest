@@ -1,0 +1,13 @@
+.headers {
+	background-color: #1a3300;
+	padding: 0px 10px;
+	display: flex;
+	justify-content: space-between;  /* Align Invest to the left and Login to the right */
+	align-items: center; /* Vertically center the text */
+}
+
+.headers-text {
+	font-size: large;
+	font-weight: 500;
+	color: white;
+}
